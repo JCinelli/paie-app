@@ -11,10 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
-@JsonIgnoreProperties({ "cotisations", "avantages", "remunerationEmployes" })
 public class ProfilRemuneration {
 
 //	FIELDS

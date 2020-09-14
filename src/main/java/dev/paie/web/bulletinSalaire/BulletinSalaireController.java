@@ -32,14 +32,14 @@ public class BulletinSalaireController {
 
 //	METHODS
 	@GetMapping
-	public List<BulletinSalaireResponseDto> findAll() {
+	public List<BulletinSalaireDetailDto> findAll() {
 
-		List<BulletinSalaireResponseDto> listBulletinSalaireDto = new ArrayList<>();
+		List<BulletinSalaireDetailDto> listBulletinSalaireDto = new ArrayList<>();
 
 		List<BulletinSalaire> listBulletinSalaire = bulletinSalaireService.findAll();
 
 		for (BulletinSalaire bulletinSalaire : listBulletinSalaire) {
-			listBulletinSalaireDto.add(new BulletinSalaireResponseDto(bulletinSalaire));
+			listBulletinSalaireDto.add(new BulletinSalaireDetailDto(bulletinSalaire));
 		}
 
 		return listBulletinSalaireDto;
