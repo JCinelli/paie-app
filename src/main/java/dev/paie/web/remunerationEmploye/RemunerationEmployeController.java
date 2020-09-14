@@ -1,5 +1,6 @@
 package dev.paie.web.remunerationEmploye;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +31,32 @@ public class RemunerationEmployeController {
 	}
 
 //	METHODS
+	@GetMapping
+	public List<RemunerationEmployeResponseDto> findAll() {
+
+		List<RemunerationEmployeResponseDto> listRemunerationEmployeDto = new ArrayList<>();
+
+		List<RemunerationEmploye> listRemunerationEmployes = remunerationEmployeService.findAll();
+
+		for (RemunerationEmploye remunerationEmploye : listRemunerationEmployes) {
+			listRemunerationEmployeDto.add(new RemunerationEmployeResponseDto(remunerationEmploye));
+		}
+
+		return listRemunerationEmployeDto;
+	}
+
 	@PostMapping
-	public ResponseEntity<?> creeRremunerationEmploye(@RequestBody @Valid CreerRemunerationEmployeRequestDto employe,
+	public ResponseEntity<?> creeRremunerationEmploye(@RequestBody @Valid RemunerationEmployeRequestDto employe,
 			BindingResult resultatValidation) {
 
 		if (!resultatValidation.hasErrors()) {
 
-			RemunerationEmploye newRemunerationEmploye = remunerationEmployeService.newRemunerationEmploye(
-					employe.getMatricule(), employe.getEntrepriseId(), employe.getProfilRenumerationId(),
-					employe.getGradeId());
+			RemunerationEmploye newRemunerationEmploye = remunerationEmployeService.newRemunerationEmploye(employe);
 
-			return ResponseEntity.ok(newRemunerationEmploye);
+			RemunerationEmployeResponseDto remunerationEmployeDto = new RemunerationEmployeResponseDto(
+					newRemunerationEmploye);
+
+			return ResponseEntity.ok(remunerationEmployeDto);
 
 		} else {
 

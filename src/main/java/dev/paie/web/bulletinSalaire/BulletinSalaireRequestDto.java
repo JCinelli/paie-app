@@ -1,20 +1,24 @@
 package dev.paie.web.bulletinSalaire;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 
-public class CreerBulletinSalaireRequestDto {
+public class BulletinSalaireRequestDto {
 
 //	FIELDS
 	@NotNull
-	Integer remunerationEmployeId;
+	private Integer remunerationEmployeId;
 
 	@NotNull
-	Integer periodeId;
+	private Integer periodeId;
 
 	@NotNull
-	BigDecimal primeExceptionnelle;
+	private BigDecimal primeExceptionnelle;
+
+	@NotNull
+	private LocalDateTime dateHeureCreation;
 
 //	GETTERS & SETTERS
 	/**
@@ -57,5 +61,19 @@ public class CreerBulletinSalaireRequestDto {
 	 */
 	public void setPrimeExceptionnelle(BigDecimal primeExceptionnelle) {
 		this.primeExceptionnelle = primeExceptionnelle;
+	}
+
+	/**
+	 * @return the dateHeureCreation
+	 */
+	public LocalDateTime getDateHeureCreation() {
+		return dateHeureCreation;
+	}
+
+	/**
+	 * @param dateHeureCreation the dateHeureCreation to set
+	 */
+	public void setDateHeureCreation(LocalDateTime dateHeureCreation) {
+		this.dateHeureCreation = dateHeureCreation;
 	}
 }

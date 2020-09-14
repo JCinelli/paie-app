@@ -14,6 +14,7 @@ import dev.paie.entite.ProfilRemuneration;
 import dev.paie.entite.RemunerationEmploye;
 import dev.paie.exception.RemunerationEmployeException;
 import dev.paie.repository.RemunerationEmployeRepository;
+import dev.paie.web.remunerationEmploye.RemunerationEmployeRequestDto;
 
 @Service
 public class RemunerationEmployeService {
@@ -40,28 +41,30 @@ public class RemunerationEmployeService {
 	}
 
 	@Transactional
-	public RemunerationEmploye newRemunerationEmploye(String matricule, Integer entrepriseId,
-			Integer profilRenumerationId, Integer gradeId) {
+	public RemunerationEmploye newRemunerationEmploye(RemunerationEmployeRequestDto remunerationEmployeDto) {
 
 		List<String> messagesErrors = new ArrayList<>();
 
-		Optional<Entreprise> optEntreprise = entrepriseService.findById(entrepriseId);
+		Optional<Entreprise> optEntreprise = entrepriseService.findById(remunerationEmployeDto.getEntrepriseId());
 
 		if (!optEntreprise.isPresent()) {
-			messagesErrors.add("L'entreprise d'id => '" + entrepriseId + "' est introuvable ou inexistante ..");
+			messagesErrors.add("L'entreprise d'id => '" + remunerationEmployeDto.getEntrepriseId()
+					+ "' est introuvable ou inexistante ..");
 		}
 
-		Optional<ProfilRemuneration> optProfilRemuneration = profilRemunerationService.findById(profilRenumerationId);
+		Optional<ProfilRemuneration> optProfilRemuneration = profilRemunerationService
+				.findById(remunerationEmployeDto.getProfilRenumerationId());
 
 		if (!optProfilRemuneration.isPresent()) {
-			messagesErrors.add("Le profil de rémunétation d'id => '" + profilRenumerationId
+			messagesErrors.add("Le profil de rémunétation d'id => '" + remunerationEmployeDto.getProfilRenumerationId()
 					+ "' est introuvable ou inexistant ..");
 		}
 
-		Optional<Grade> optGrade = gradeService.findById(gradeId);
+		Optional<Grade> optGrade = gradeService.findById(remunerationEmployeDto.getGradeId());
 
 		if (!optGrade.isPresent()) {
-			messagesErrors.add("Le grade d'id => '" + gradeId + "' est introuvable ou inexistant ..");
+			messagesErrors.add(
+					"Le grade d'id => '" + remunerationEmployeDto.getGradeId() + "' est introuvable ou inexistant ..");
 		}
 
 		if (!messagesErrors.isEmpty()) {
@@ -69,13 +72,17 @@ public class RemunerationEmployeService {
 		}
 
 		RemunerationEmploye newRemunerationEmploye = new RemunerationEmploye();
-		newRemunerationEmploye.setMatricule(matricule);
+		newRemunerationEmploye.setMatricule(remunerationEmployeDto.getMatricule());
 		newRemunerationEmploye.setEntreprise(optEntreprise.get());
 		newRemunerationEmploye.setProfilRemuneration(optProfilRemuneration.get());
 		newRemunerationEmploye.setGrade(optGrade.get());
 
 		return remunerationEmployeRepository.save(newRemunerationEmploye);
 
+	}
+
+	public List<RemunerationEmploye> findAll() {
+		return remunerationEmployeRepository.findAll();
 	}
 
 }

@@ -1,5 +1,6 @@
 package dev.paie.web.bulletinSalaire;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.paie.entite.BulletinSalaire;
-import dev.paie.entite.BulletinSalairePreview;
 import dev.paie.exception.BulletinSalaireException;
 import dev.paie.service.BulletinSalaireService;
 
@@ -32,21 +32,31 @@ public class BulletinSalaireController {
 
 //	METHODS
 	@GetMapping
-	public List<BulletinSalairePreview> preview() {
-		return new BulletinSalairePreview().toPreview(bulletinSalaireService.findAll());
+	public List<BulletinSalaireResponseDto> findAll() {
+
+		List<BulletinSalaireResponseDto> listBulletinSalaireDto = new ArrayList<>();
+
+		List<BulletinSalaire> listBulletinSalaire = bulletinSalaireService.findAll();
+
+		for (BulletinSalaire bulletinSalaire : listBulletinSalaire) {
+			listBulletinSalaireDto.add(new BulletinSalaireResponseDto(bulletinSalaire));
+		}
+
+		return listBulletinSalaireDto;
+
 	}
 
 	@PostMapping
-	public ResponseEntity<?> creeBulletinSalaire(@RequestBody @Valid CreerBulletinSalaireRequestDto bulletinSalaire,
+	public ResponseEntity<?> creeBulletinSalaire(@RequestBody @Valid BulletinSalaireRequestDto bulletinSalaireDto,
 			BindingResult resultatValidation) {
 
 		if (!resultatValidation.hasErrors()) {
 
-			BulletinSalaire newBulletinSalaire = bulletinSalaireService.newBulletinSalaire(
-					bulletinSalaire.getRemunerationEmployeId(), bulletinSalaire.getPeriodeId(),
-					bulletinSalaire.getPrimeExceptionnelle());
+			BulletinSalaire newBulletinSalaire = bulletinSalaireService.newBulletinSalaire(bulletinSalaireDto);
 
-			return ResponseEntity.ok(newBulletinSalaire);
+			BulletinSalaireResponseDto responseDto = new BulletinSalaireResponseDto(newBulletinSalaire);
+
+			return ResponseEntity.ok(responseDto);
 
 		} else {
 

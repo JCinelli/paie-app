@@ -2,13 +2,13 @@ package dev.paie.web.remunerationEmploye;
 
 import dev.paie.entite.RemunerationEmploye;
 
-public class CreerRemunerationEmployeResponseDto extends CreerRemunerationEmployeRequestDto {
+public class RemunerationEmployeResponseDto extends RemunerationEmployeRequestDto {
 
 //	FIELDS
 	private Integer id;
 
 //	CONSTRUCTOR
-	public CreerRemunerationEmployeResponseDto(RemunerationEmploye remunerationEmploye) {
+	public RemunerationEmployeResponseDto(RemunerationEmploye remunerationEmploye) {
 		this.id = remunerationEmploye.getId();
 		this.setEntrepriseId(remunerationEmploye.getEntreprise().getId());
 		this.setMatricule(remunerationEmploye.getMatricule());

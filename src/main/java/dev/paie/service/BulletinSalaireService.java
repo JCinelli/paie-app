@@ -1,6 +1,5 @@
 package dev.paie.service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +13,7 @@ import dev.paie.entite.Periode;
 import dev.paie.entite.RemunerationEmploye;
 import dev.paie.exception.BulletinSalaireException;
 import dev.paie.repository.BulletinSalaireRepository;
+import dev.paie.web.bulletinSalaire.BulletinSalaireRequestDto;
 
 @Service
 public class BulletinSalaireService {
@@ -37,22 +37,23 @@ public class BulletinSalaireService {
 	}
 
 	@Transactional
-	public BulletinSalaire newBulletinSalaire(Integer remunerationEmployeId, Integer periodeId,
-			BigDecimal primeExceptionnelle) {
+	public BulletinSalaire newBulletinSalaire(BulletinSalaireRequestDto bulletinSalaireDto) {
 
 		List<String> messagesErrors = new ArrayList<>();
 
 		Optional<RemunerationEmploye> optRemunerationEmploye = remunerationEmployeService
-				.findById(remunerationEmployeId);
+				.findById(bulletinSalaireDto.getRemunerationEmployeId());
 
 		if (!optRemunerationEmploye.isPresent()) {
-			messagesErrors.add("L'employé d'id => '" + remunerationEmployeId + "' est introuvable ou inexistant ..");
+			messagesErrors.add("L'employé d'id => '" + bulletinSalaireDto.getRemunerationEmployeId()
+					+ "' est introuvable ou inexistant ..");
 		}
 
-		Optional<Periode> optPeriode = periodeService.findByid(periodeId);
+		Optional<Periode> optPeriode = periodeService.findByid(bulletinSalaireDto.getPeriodeId());
 
 		if (!optPeriode.isPresent()) {
-			messagesErrors.add("La période d'id => '" + periodeId + "' est introuvable ou inexistante ..");
+			messagesErrors.add(
+					"La période d'id => '" + bulletinSalaireDto.getPeriodeId() + "' est introuvable ou inexistante ..");
 		}
 
 		if (!messagesErrors.isEmpty()) {
@@ -61,7 +62,7 @@ public class BulletinSalaireService {
 
 		BulletinSalaire newBulletinSalaire = new BulletinSalaire();
 		newBulletinSalaire.setPeriode(optPeriode.get());
-		newBulletinSalaire.setPrimeExceptionnelle(primeExceptionnelle);
+		newBulletinSalaire.setPrimeExceptionnelle(bulletinSalaireDto.getPrimeExceptionnelle());
 		newBulletinSalaire.setRemunerationEmploye(optRemunerationEmploye.get());
 		newBulletinSalaire.setDateHeureCreation(LocalDateTime.now());
 

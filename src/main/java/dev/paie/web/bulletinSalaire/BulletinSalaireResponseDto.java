@@ -2,17 +2,18 @@ package dev.paie.web.bulletinSalaire;
 
 import dev.paie.entite.BulletinSalaire;
 
-public class CreerBulletinSalaireResponseDto extends CreerBulletinSalaireRequestDto {
+public class BulletinSalaireResponseDto extends BulletinSalaireRequestDto {
 
 //	FIELDS
-	Integer id;
+	private Integer id;
 
 //	CONSTRUCTOR
-	public CreerBulletinSalaireResponseDto(BulletinSalaire bulletinSalaire) {
+	public BulletinSalaireResponseDto(BulletinSalaire bulletinSalaire) {
 		this.id = bulletinSalaire.getId();
 		this.setPeriodeId(bulletinSalaire.getPeriode().getId());
 		this.setPrimeExceptionnelle(bulletinSalaire.getPrimeExceptionnelle());
 		this.setRemunerationEmployeId(bulletinSalaire.getRemunerationEmploye().getId());
+		this.setDateHeureCreation(bulletinSalaire.getDateHeureCreation());
 	}
 
 //	GETTERS & SETTERS

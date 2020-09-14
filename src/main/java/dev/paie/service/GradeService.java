@@ -1,5 +1,6 @@
 package dev.paie.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class GradeService {
 //	METHODS
 	public Optional<Grade> findById(Integer id) {
 		return gradeRepository.findById(id);
+	}
+
+	public List<Grade> findAll() {
+		return gradeRepository.findAll();
 	}
 
 }

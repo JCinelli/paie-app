@@ -2,7 +2,7 @@ package dev.paie.web.remunerationEmploye;
 
 import com.sun.istack.NotNull;
 
-public class CreerRemunerationEmployeRequestDto {
+public class RemunerationEmployeRequestDto {
 
 //	FIELDS
 	@NotNull
